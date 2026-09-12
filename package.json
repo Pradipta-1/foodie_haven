@@ -6,6 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:server": "npm --prefix backend install && npm --prefix backend run build",
+    "build:all": "npm run build && npm --prefix backend install && npm --prefix backend run build",
+    "start": "npm --prefix backend start",
+    "seed": "npm --prefix backend run seed",
     "lint": "oxlint",
     "preview": "vite preview"
   },
