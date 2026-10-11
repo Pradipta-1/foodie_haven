@@ -85,24 +85,24 @@ export default function OrderConfirmationPage() {
   }
 
   return (
-    <div className="min-h-screen pt-24 pb-16 bg-gray-50">
+    <div className="min-h-screen pt-20 md:pt-24 pb-12 bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Success Banner */}
-        <div className="bg-white rounded-3xl p-6 sm:p-10 border border-gray-200 shadow-sm text-center mb-8 animate-slide-up">
-          <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
-            <CheckCircle2 className="w-12 h-12" />
+        <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-10 border border-gray-200 shadow-sm text-center mb-6 sm:mb-8 animate-slide-up">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-inner">
+            <CheckCircle2 className="w-10 h-10 sm:w-12 sm:h-12" />
           </div>
           <span className="inline-block px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
             Order Successful
           </span>
-          <h1 className="text-3xl sm:text-4xl font-black text-gray-900 mb-2">
+          <h1 className="text-2xl sm:text-4xl font-black text-gray-900 mb-2">
             Thank you for your order!
           </h1>
-          <p className="text-gray-600 max-w-md mx-auto text-sm sm:text-base">
+          <p className="text-gray-600 max-w-md mx-auto text-xs sm:text-base">
             Your order has been received and is being prepared with love and fresh ingredients.
           </p>
 
-          <div className="mt-6 inline-flex flex-wrap items-center justify-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-200 text-sm">
+          <div className="mt-5 sm:mt-6 inline-flex flex-wrap items-center justify-center gap-3 sm:gap-4 p-3.5 sm:p-4 bg-gray-50 rounded-2xl border border-gray-200 text-xs sm:text-sm w-full sm:w-auto">
             <div>
               <span className="text-gray-500 block text-xs">Order Number</span>
               <span className="font-mono font-bold text-gray-900">{order.orderNumber}</span>

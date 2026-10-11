@@ -138,31 +138,31 @@ export default function FoodDetailsModal({ item: propItem, isOpen, onClose }: Fo
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
       <div
-        className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden animate-scale-in"
+        className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-3xl max-h-[92vh] sm:max-h-[90vh] flex flex-col overflow-hidden animate-scale-in"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header with Image */}
-        <div className="relative h-64 sm:h-80 bg-gray-100">
+        <div className="relative w-full h-48 sm:h-64 md:h-72 bg-gray-100 shrink-0 overflow-hidden">
           <img
             src={item.image}
             alt={item.name}
             onError={(e) => {
               (e.target as HTMLImageElement).src = '/images/chicken_cheese_burger.jpg';
             }}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 bg-white/90 backdrop-blur-sm hover:bg-white rounded-full shadow-lg transition-colors"
+            className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 bg-white/90 backdrop-blur-sm hover:bg-white rounded-full shadow-lg transition-colors z-10"
             aria-label="Close"
           >
             <X className="w-5 h-5 text-gray-700" />
           </button>
 
           {/* Veg/Non-veg badge */}
-          <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg flex items-center gap-2">
+          <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg flex items-center gap-2 z-10">
             <span
               className={`w-3 h-3 rounded-full border-2 ${
                 item.isVeg ? 'border-green-600 bg-green-500' : 'border-red-600 bg-red-500'
@@ -175,7 +175,7 @@ export default function FoodDetailsModal({ item: propItem, isOpen, onClose }: Fo
         </div>
 
         {/* Scrollable Content */}
-        <div className="overflow-y-auto max-h-[calc(90vh-20rem)] p-6 space-y-6">
+        <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6 space-y-6">
           {/* Title & Description */}
           <div>
             <div className="flex items-start justify-between gap-4 mb-2">
@@ -304,13 +304,14 @@ export default function FoodDetailsModal({ item: propItem, isOpen, onClose }: Fo
         </div>
 
         {/* Footer with Actions */}
-        <div className="border-t border-gray-200 p-4 sm:p-6 bg-gray-50">
-          <div className="flex items-center justify-between gap-4 flex-wrap">
+        <div className="shrink-0 border-t border-gray-200 p-4 sm:p-5 bg-gray-50">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
             {/* Quantity */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between sm:justify-start gap-3">
               <span className="text-sm font-medium text-gray-700">Quantity:</span>
               <div className="flex items-center gap-2 bg-white border border-gray-300 rounded-lg p-1">
                 <button
+                  type="button"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   className="w-8 h-8 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md flex items-center justify-center transition-colors"
                   aria-label="Decrease quantity"
@@ -319,6 +320,7 @@ export default function FoodDetailsModal({ item: propItem, isOpen, onClose }: Fo
                 </button>
                 <span className="w-8 text-center font-bold text-gray-900">{quantity}</span>
                 <button
+                  type="button"
                   onClick={() => setQuantity(quantity + 1)}
                   className="w-8 h-8 bg-primary-600 hover:bg-primary-700 text-white rounded-md flex items-center justify-center transition-colors"
                   aria-label="Increase quantity"
@@ -331,15 +333,17 @@ export default function FoodDetailsModal({ item: propItem, isOpen, onClose }: Fo
             {/* Add to Cart Button */}
             {!item.isAvailable ? (
               <button
+                type="button"
                 disabled
-                className="flex-1 sm:flex-initial bg-gray-200 text-gray-500 font-bold py-3 px-8 min-w-[200px] rounded-xl cursor-not-allowed justify-center flex items-center gap-2"
+                className="w-full sm:w-auto bg-gray-200 text-gray-500 font-bold py-3 px-6 sm:px-8 rounded-xl cursor-not-allowed justify-center flex items-center gap-2 text-sm sm:text-base"
               >
                 ✕ Currently Out of Stock
               </button>
             ) : (
               <button
+                type="button"
                 onClick={handleAddToCart}
-                className="flex-1 sm:flex-initial btn-primary text-base py-3 px-8 min-w-[200px] justify-center flex items-center gap-2 shadow-lg"
+                className="w-full sm:w-auto btn-primary text-sm sm:text-base py-3 px-6 sm:px-8 justify-center flex items-center gap-2 shadow-lg"
               >
                 <span>Add to Cart</span>
                 <span className="font-extrabold">{formatCurrency(calculateTotal())}</span>

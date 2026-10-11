@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import { FoodProvider } from './context/FoodContext';
@@ -10,6 +10,10 @@ import { OrderProvider } from './context/OrderContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import CartDrawer from './components/CartDrawer';
+import ScrollToTop from './components/ScrollToTop';
+import ClickRipple from './components/ClickRipple';
+import BackToTopButton from './components/BackToTopButton';
+import MobileBottomNav from './components/MobileBottomNav';
 
 // Pages
 import HomePage from './pages/HomePage';
@@ -29,9 +33,10 @@ import AdminDashboard from './pages/AdminDashboard';
 // Protected Route wrapper
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth();
+  const location = useLocation();
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   return <>{children}</>;
@@ -60,13 +65,14 @@ function AppContent() {
     return (
       <div className="flex flex-col min-h-screen bg-gray-50">
         <Navbar />
-        <main className="flex-1">
+        <main className="flex-1 pb-16 lg:pb-0">
           <Routes>
             <Route path="/admin" element={<AdminDashboard />} />
             {/* Redirect any other path (/, /menu, /cart, /checkout, etc.) directly to /admin */}
             <Route path="*" element={<Navigate to="/admin" replace />} />
           </Routes>
         </main>
+        <MobileBottomNav />
       </div>
     );
   }
@@ -75,7 +81,7 @@ function AppContent() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-1">
+      <main className="flex-1 pb-16 lg:pb-0">
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<HomePage />} />
@@ -129,6 +135,7 @@ function AppContent() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
+      <MobileBottomNav />
       <Footer />
       <CartDrawer />
     </div>
@@ -138,6 +145,9 @@ function AppContent() {
 function App() {
   return (
     <Router>
+      <ScrollToTop />
+      <ClickRipple />
+      <BackToTopButton />
       <AuthProvider>
         <ToastProvider>
           <FoodProvider>

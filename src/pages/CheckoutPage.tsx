@@ -117,9 +117,9 @@ export default function CheckoutPage() {
   if (cart.length === 0) return null;
 
   return (
-    <div className="min-h-screen pt-24 pb-16 bg-gray-50">
+    <div className="min-h-screen pt-20 md:pt-24 pb-12 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-8">Checkout</h1>
+        <h1 className="text-2xl sm:text-4xl font-extrabold text-gray-900 mb-5 sm:mb-6">Checkout</h1>
 
         <div className="grid lg:grid-cols-12 gap-8">
           {/* Left: Forms */}
@@ -138,15 +138,15 @@ export default function CheckoutPage() {
                     setDeliveryType('standard');
                     setErrors({});
                   }}
-                  className={`p-4 rounded-xl border-2 transition-all text-center ${
+                  className={`p-2.5 sm:p-4 rounded-xl border-2 transition-all text-center ${
                     deliveryType === 'standard'
                       ? 'border-primary-500 bg-primary-50'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  <Truck className={`w-6 h-6 mx-auto mb-2 ${deliveryType === 'standard' ? 'text-primary-600' : 'text-gray-400'}`} />
-                  <div className="font-semibold text-sm text-gray-900">Standard</div>
-                  <div className="text-xs text-gray-500">30-45 mins</div>
+                  <Truck className={`w-5 h-5 sm:w-6 sm:h-6 mx-auto mb-1.5 sm:mb-2 ${deliveryType === 'standard' ? 'text-primary-600' : 'text-gray-400'}`} />
+                  <div className="font-semibold text-xs sm:text-sm text-gray-900">Standard</div>
+                  <div className="text-[11px] sm:text-xs text-gray-500">30-45 mins</div>
                   <div className="text-xs font-bold text-primary-600 mt-1">
                     {deliveryFee === 0 ? <span className="text-emerald-600 font-bold">FREE</span> : formatCurrency(deliveryFee)}
                   </div>
@@ -158,15 +158,15 @@ export default function CheckoutPage() {
                     setDeliveryType('express');
                     setErrors({});
                   }}
-                  className={`p-4 rounded-xl border-2 transition-all text-center ${
+                  className={`p-2.5 sm:p-4 rounded-xl border-2 transition-all text-center ${
                     deliveryType === 'express'
                       ? 'border-primary-500 bg-primary-50'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  <Clock className={`w-6 h-6 mx-auto mb-2 ${deliveryType === 'express' ? 'text-primary-600' : 'text-gray-400'}`} />
-                  <div className="font-semibold text-sm text-gray-900">Express</div>
-                  <div className="text-xs text-gray-500">15-25 mins</div>
+                  <Clock className={`w-5 h-5 sm:w-6 sm:h-6 mx-auto mb-1.5 sm:mb-2 ${deliveryType === 'express' ? 'text-primary-600' : 'text-gray-400'}`} />
+                  <div className="font-semibold text-xs sm:text-sm text-gray-900">Express</div>
+                  <div className="text-[11px] sm:text-xs text-gray-500">15-25 mins</div>
                   <div className="text-xs font-bold text-primary-600 mt-1">{formatCurrency(79)}</div>
                 </button>
 
@@ -176,15 +176,15 @@ export default function CheckoutPage() {
                     setDeliveryType('pickup');
                     setErrors({});
                   }}
-                  className={`p-4 rounded-xl border-2 transition-all text-center ${
+                  className={`p-2.5 sm:p-4 rounded-xl border-2 transition-all text-center ${
                     deliveryType === 'pickup'
                       ? 'border-primary-500 bg-primary-50'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  <Store className={`w-6 h-6 mx-auto mb-2 ${deliveryType === 'pickup' ? 'text-primary-600' : 'text-gray-400'}`} />
-                  <div className="font-semibold text-sm text-gray-900">Pickup</div>
-                  <div className="text-xs text-gray-500">10-15 mins</div>
+                  <Store className={`w-5 h-5 sm:w-6 sm:h-6 mx-auto mb-1.5 sm:mb-2 ${deliveryType === 'pickup' ? 'text-primary-600' : 'text-gray-400'}`} />
+                  <div className="font-semibold text-xs sm:text-sm text-gray-900">Pickup</div>
+                  <div className="text-[11px] sm:text-xs text-gray-500">10-15 mins</div>
                   <div className="text-xs font-bold text-emerald-600 mt-1">FREE</div>
                 </button>
               </div>
@@ -386,7 +386,7 @@ export default function CheckoutPage() {
 
           {/* Right: Order Summary */}
           <div className="lg:col-span-5">
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 sticky top-24">
+            <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-200 lg:sticky lg:top-24 max-h-[calc(100vh-7rem)] overflow-y-auto">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Order Summary</h2>
 
               {/* Items */}

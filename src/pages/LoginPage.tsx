@@ -91,40 +91,40 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen pt-24 pb-16 bg-gradient-to-br from-primary-50 via-orange-50 to-accent-50 flex items-center justify-center">
+    <div className="min-h-screen pt-20 md:pt-24 pb-12 bg-gradient-to-br from-primary-50 via-orange-50 to-accent-50 flex items-center justify-center">
       <div className="max-w-md w-full mx-auto px-4">
-        <div className="bg-white rounded-3xl shadow-2xl p-8 sm:p-10 border border-gray-100">
+        <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl p-6 sm:p-8 border border-gray-100">
           {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-extrabold text-gray-900 mb-2">Welcome Back!</h1>
-            <p className="text-gray-600 text-sm">
+          <div className="text-center mb-5 sm:mb-6">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-1">Welcome Back!</h1>
+            <p className="text-gray-600 text-xs sm:text-sm">
               Login to your account to continue ordering delicious food
             </p>
           </div>
 
           {/* Form Error */}
           {errors.form && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3 text-sm text-red-700">
-              <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl flex items-start gap-2.5 text-xs sm:text-sm text-red-700">
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
               <span>{errors.form}</span>
             </div>
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">
                 Email Address
               </label>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
                   type="email"
                   id="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className={`input-field pl-12 ${errors.email ? 'border-red-500 ring-1 ring-red-500' : ''}`}
+                  className={`input-field pl-10 py-2.5 text-sm ${errors.email ? 'border-red-500 ring-1 ring-red-500' : ''}`}
                   placeholder="you@example.com"
                 />
               </div>
@@ -133,17 +133,17 @@ export default function LoginPage() {
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
                   type="password"
                   id="password"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className={`input-field pl-12 ${errors.password ? 'border-red-500 ring-1 ring-red-500' : ''}`}
+                  className={`input-field pl-10 py-2.5 text-sm ${errors.password ? 'border-red-500 ring-1 ring-red-500' : ''}`}
                   placeholder="Enter your password"
                 />
               </div>
@@ -151,13 +151,13 @@ export default function LoginPage() {
             </div>
 
             {/* Remember Me & Forgot Password */}
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center justify-between text-xs sm:text-sm">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={formData.rememberMe}
                   onChange={(e) => setFormData({ ...formData, rememberMe: e.target.checked })}
-                  className="w-4 h-4 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+                  className="w-3.5 h-3.5 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
                 />
                 <span className="text-gray-600 font-medium">Remember me</span>
               </label>
@@ -170,11 +170,11 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full py-3.5 flex items-center justify-center gap-2 text-base shadow-lg"
+              className="btn-primary w-full py-2.5 sm:py-3 flex items-center justify-center gap-2 text-sm sm:text-base shadow-md"
             >
               {loading ? (
                 <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin" />
                   <span>Logging in...</span>
                 </>
               ) : (
@@ -184,7 +184,7 @@ export default function LoginPage() {
           </form>
 
           {/* Divider */}
-          <div className="relative my-6">
+          <div className="relative my-4">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-200" />
             </div>
@@ -196,12 +196,12 @@ export default function LoginPage() {
           </div>
 
           {/* Demo Logins */}
-          <div className="space-y-2">
+          <div className="space-y-1.5 sm:space-y-2">
             <button
               type="button"
               onClick={() => handleDemoLogin('customer')}
               disabled={loading}
-              className="w-full py-2.5 border-2 border-gray-300 hover:border-primary-500 text-gray-700 hover:text-primary-700 rounded-xl font-semibold text-sm transition-all hover:bg-primary-50"
+              className="w-full py-2 border border-gray-300 hover:border-primary-500 text-gray-700 hover:text-primary-700 rounded-xl font-semibold text-xs sm:text-sm transition-all hover:bg-primary-50"
             >
               Try Demo Login (Customer)
             </button>
@@ -209,27 +209,31 @@ export default function LoginPage() {
               type="button"
               onClick={() => handleDemoLogin('admin')}
               disabled={loading}
-              className="w-full py-2.5 border-2 border-gray-300 hover:border-accent-500 text-gray-700 hover:text-accent-700 rounded-xl font-semibold text-sm transition-all hover:bg-accent-50"
+              className="w-full py-2 border border-gray-300 hover:border-accent-500 text-gray-700 hover:text-accent-700 rounded-xl font-semibold text-xs sm:text-sm transition-all hover:bg-accent-50"
             >
               Login as Admin
             </button>
           </div>
 
           {/* Sign Up Link */}
-          <p className="text-center text-sm text-gray-600 mt-6">
+          <p className="text-center text-xs sm:text-sm text-gray-600 mt-4">
             Don't have an account?{' '}
-            <Link to="/register" className="text-primary-600 hover:text-primary-700 font-bold">
+            <Link
+              to="/register"
+              state={{ from: location.state?.from }}
+              className="text-primary-600 hover:text-primary-700 font-bold"
+            >
               Sign Up
             </Link>
           </p>
 
           {/* Demo Credentials Info */}
-          <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
-            <p className="text-xs text-blue-800 font-semibold mb-1">Demo Credentials:</p>
-            <p className="text-xs text-blue-700">
+          <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-xl">
+            <p className="text-xs text-blue-800 font-semibold mb-0.5">Demo Credentials:</p>
+            <p className="text-xs text-blue-700 leading-tight">
               <strong>Admin:</strong> admin@foodiehaven.com / admin123
             </p>
-            <p className="text-xs text-blue-700">
+            <p className="text-xs text-blue-700 leading-tight mt-0.5">
               <strong>Customer:</strong> Any registered email (use Sign Up first)
             </p>
           </div>

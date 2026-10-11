@@ -7,6 +7,22 @@ export const connectDB = async () => {
       serverSelectionTimeoutMS: 5000,
     });
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+
+    // Automatically remove any duplicate food items in database
+    try {
+      const { FoodItem } = await import('../models/FoodItem');
+      const allFoods = await FoodItem.find({});
+      const seenNames = new Set<string>();
+      for (const food of allFoods) {
+        const norm = food.name.toLowerCase().trim();
+        if (seenNames.has(norm)) {
+          console.log(`🧹 Removing duplicate food item from DB: "${food.name}" (${food._id})`);
+          await FoodItem.findByIdAndDelete(food._id);
+        } else {
+          seenNames.add(norm);
+        }
+      }
+    } catch (cleanErr) {}
   } catch (error: any) {
     console.warn(`⚠️ MongoDB connection warning: ${error.message}`);
     if (process.env.NODE_ENV === 'production') {

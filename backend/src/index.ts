@@ -109,8 +109,8 @@ if (fs.existsSync(frontendDistPath)) {
   app.use(express.static(frontendDistPath));
 
   // SPA fallback: any non-API route serves the frontend index.html
-  app.get('*', (req: Request, res: Response, next) => {
-    if (req.path.startsWith('/api')) {
+  app.use((req: Request, res: Response, next) => {
+    if (req.method !== 'GET' || req.path.startsWith('/api')) {
       return next();
     }
     const indexPath = path.join(frontendDistPath, 'index.html');

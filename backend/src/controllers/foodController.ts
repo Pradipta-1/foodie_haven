@@ -84,6 +84,30 @@ export const getFoodItem = async (req: Request, res: Response): Promise<void> =>
 // @access  Private/Admin
 export const createFoodItem = async (req: Request, res: Response): Promise<void> => {
   try {
+    const trimmedName = req.body.name ? req.body.name.trim() : '';
+    if (!trimmedName) {
+      res.status(400).json({ success: false, message: 'Dish name is required' });
+      return;
+    }
+
+    // Check if an item with the same name already exists to prevent duplicate
+    const existing = await FoodItem.findOne({
+      name: { $regex: new RegExp(`^${trimmedName}$`, 'i') },
+    });
+
+    if (existing) {
+      const updated = await FoodItem.findByIdAndUpdate(existing._id, req.body, {
+        new: true,
+        runValidators: true,
+      });
+      res.status(200).json({
+        success: true,
+        message: 'Updated existing food item',
+        data: updated,
+      });
+      return;
+    }
+
     const foodItem = await FoodItem.create(req.body);
 
     res.status(201).json({

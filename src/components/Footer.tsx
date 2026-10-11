@@ -128,9 +128,10 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Copyright */}
+        {/* Copyright & Live Status */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
           <p>© {new Date().getFullYear()} Foodie Haven Restaurant. All rights reserved.</p>
+
           <p className="flex items-center gap-1">
             Crafted with <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500" /> for delicious food lovers
           </p>

@@ -1,6 +1,17 @@
 import { FoodItem, Order, User, Coupon, OrderStatus } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const getApiBaseUrl = () => {
+  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
+  if (typeof window !== 'undefined') {
+    // Use relative '/api' on Vite dev ports so both desktop and mobile devices on local WiFi connect seamlessly
+    if (window.location.port === '5173' || window.location.port === '4173') {
+      return '/api';
+    }
+  }
+  return 'http://localhost:5000/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 // Helper to get auth token (checks tab-isolated sessionStorage first, then localStorage)
 const getAuthHeaders = () => {

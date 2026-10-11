@@ -48,9 +48,9 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen pt-24 pb-16 bg-gray-50">
+    <div className="min-h-screen pt-20 md:pt-24 pb-24 lg:pb-12 bg-gray-50">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-8">My Profile</h1>
+        <h1 className="text-2xl sm:text-4xl font-extrabold text-gray-900 mb-5 sm:mb-8">My Profile</h1>
 
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Left: Stats Cards */}

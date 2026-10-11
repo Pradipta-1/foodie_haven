@@ -24,58 +24,61 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary-50 via-orange-50 to-accent-50 pt-24 sm:pt-28 pb-16 sm:pb-20 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-primary-50 via-orange-50 to-accent-50 pt-20 sm:pt-20 lg:pt-28 pb-6 sm:pb-16 lg:pb-20 min-h-[calc(100vh-4rem)] min-h-[calc(100dvh-4rem)] sm:min-h-0 flex flex-col justify-between overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMTUwLDUwLDAuMDUpIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-40" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full flex-1 flex flex-col justify-between">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center flex-1">
             {/* Text Content */}
-            <div className="text-center lg:text-left space-y-6 animate-slide-up">
-              <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-md">
-                <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
-                <span className="text-sm font-semibold text-gray-700">Rated 4.8/5 by 10,000+ customers</span>
-              </div>
+            <div className="text-center lg:text-left flex-1 flex flex-col justify-between sm:justify-start sm:space-y-6 animate-slide-up">
+              {/* Main Content Group */}
+              <div className="space-y-3 sm:space-y-6">
+                <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-sm">
+                  <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                  <span className="text-xs sm:text-sm font-semibold text-gray-700">Rated 4.8/5 by 10,000+ customers</span>
+                </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
-                Delicious Food,
-                <span className="block bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
-                  Delivered to Your Door
-                </span>
-              </h1>
+                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
+                  Delicious Food,
+                  <span className="block bg-gradient-to-r from-primary-600 to-accent-600 bg-clip-text text-transparent">
+                    Delivered to Your Door
+                  </span>
+                </h1>
 
-              <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto lg:mx-0">
-                Order from our curated menu featuring cuisine from around the world. Fresh ingredients, prepared daily by expert chefs.
-              </p>
+                <p className="text-xs sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                  Order from our curated menu featuring cuisine from around the world. Fresh ingredients, prepared daily by expert chefs.
+                </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <button
-                  onClick={() => navigate('/menu')}
-                  className="btn-primary text-lg px-8 py-4 flex items-center justify-center gap-2"
-                >
-                  Order Now
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={() => navigate('/menu')}
-                  className="btn-secondary text-lg px-8 py-4"
-                >
-                  View Menu
-                </button>
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start pt-1 sm:pt-0">
+                  <button
+                    onClick={() => navigate('/menu')}
+                    className="btn-primary btn-shine w-full sm:w-auto text-base sm:text-lg px-8 py-3.5 sm:py-4 flex items-center justify-center gap-2 group shadow-xl hover:shadow-primary-500/25 hover:scale-105 active:scale-95 transition-all duration-300"
+                  >
+                    <span>Order Now</span>
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform duration-200" />
+                  </button>
+                  <button
+                    onClick={() => navigate('/menu')}
+                    className="btn-secondary w-full sm:w-auto text-base sm:text-lg px-8 py-3.5 sm:py-4 hover:scale-105 active:scale-95 hover:shadow-lg transition-all duration-300"
+                  >
+                    View Menu
+                  </button>
+                </div>
               </div>
 
               {/* Stats */}
-              <div className="grid grid-cols-3 gap-6 pt-8">
+              <div className="grid grid-cols-3 gap-2 sm:gap-6 pt-5 sm:pt-8 mt-4 sm:mt-0 border-t border-orange-200/50 sm:border-t-0">
                 <div className="text-center lg:text-left">
-                  <div className="text-3xl font-bold text-gray-900">50+</div>
-                  <div className="text-sm text-gray-600">Food Items</div>
+                  <div className="text-2xl sm:text-3xl font-bold text-gray-900">50+</div>
+                  <div className="text-xs sm:text-sm text-gray-600">Food Items</div>
                 </div>
                 <div className="text-center lg:text-left">
-                  <div className="text-3xl font-bold text-gray-900">10K+</div>
-                  <div className="text-sm text-gray-600">Happy Customers</div>
+                  <div className="text-2xl sm:text-3xl font-bold text-gray-900">10K+</div>
+                  <div className="text-xs sm:text-sm text-gray-600">Happy Customers</div>
                 </div>
                 <div className="text-center lg:text-left">
-                  <div className="text-3xl font-bold text-gray-900">30m</div>
-                  <div className="text-sm text-gray-600">Avg. Delivery</div>
+                  <div className="text-2xl sm:text-3xl font-bold text-gray-900">30m</div>
+                  <div className="text-xs sm:text-sm text-gray-600">Avg. Delivery</div>
                 </div>
               </div>
             </div>
@@ -84,8 +87,8 @@ export default function HomePage() {
             <div className="relative animate-fade-in animate-delay-200 hidden lg:block">
               <div className="relative">
                 <img
-                  src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80"
-                  alt="Delicious food spread"
+                  src="/images/indian_food_feast.jpg"
+                  alt="Authentic Indian Food Feast"
                   className="rounded-3xl shadow-2xl w-full h-[500px] object-cover"
                 />
                 {/* Floating Cards */}
@@ -162,17 +165,21 @@ export default function HomePage() {
                   alt={deal.title}
                   className="w-full h-64 object-cover opacity-50"
                 />
-                <div className="absolute inset-0 p-6 flex flex-col justify-end text-white">
-                  <span className="inline-block bg-white text-primary-600 font-bold text-xs px-3 py-1 rounded-full mb-3 w-fit">
+                <div className="absolute inset-0 p-5 sm:p-6 flex flex-col justify-end text-white">
+                  <span className="inline-block bg-white text-primary-600 font-bold text-xs px-3 py-1 rounded-full mb-2 sm:mb-3 w-fit">
                     {deal.discountBadge}
                   </span>
-                  <h3 className="text-2xl font-bold mb-2">{deal.title}</h3>
-                  <p className="text-white/90 mb-4">{deal.subtitle}</p>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-mono bg-white/20 backdrop-blur-sm px-3 py-1 rounded-lg">
+                  <h3 className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2">{deal.title}</h3>
+                  <p className="text-white/90 text-xs sm:text-sm mb-3 sm:mb-4">{deal.subtitle}</p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-xs sm:text-sm font-mono bg-white/20 backdrop-blur-sm px-2.5 py-1 rounded-lg">
                       {deal.discountCode}
                     </span>
-                    <button className="btn-secondary text-sm">
+                    <button
+                      type="button"
+                      onClick={() => navigate('/menu')}
+                      className="btn-secondary text-xs sm:text-sm py-1.5 px-3 sm:py-2 sm:px-4"
+                    >
                       Apply Code
                     </button>
                   </div>
@@ -195,14 +202,14 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
             {featuredCategories.map((category) => (
               <button
                 key={category}
                 onClick={() => navigate(`/menu?category=${category}`)}
-                className="group p-6 bg-gradient-to-br from-gray-50 to-gray-100 hover:from-primary-50 hover:to-accent-50 rounded-2xl border border-gray-200 hover:border-primary-300 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg"
+                className="group p-4 sm:p-6 bg-gradient-to-br from-gray-50 to-gray-100 hover:from-primary-50 hover:to-accent-50 rounded-2xl border border-gray-200 hover:border-primary-300 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg active:scale-95"
               >
-                <div className="text-4xl mb-3">
+                <div className="text-3xl sm:text-4xl mb-2 sm:mb-3 transform group-hover:scale-125 group-hover:-rotate-6 transition-transform duration-300 inline-block">
                   {category === 'Burgers' && '🍔'}
                   {category === 'Pizza' && '🍕'}
                   {category === 'Pasta' && '🍝'}
@@ -212,7 +219,7 @@ export default function HomePage() {
                   {category === 'Desserts' && '🍰'}
                   {category === 'Beverages' && '🥤'}
                 </div>
-                <h3 className="font-semibold text-gray-900 group-hover:text-primary-600 transition-colors">
+                <h3 className="font-semibold text-sm sm:text-base text-gray-900 group-hover:text-primary-600 transition-colors">
                   {category}
                 </h3>
               </button>

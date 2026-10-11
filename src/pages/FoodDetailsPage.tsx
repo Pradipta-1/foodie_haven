@@ -128,20 +128,20 @@ export default function FoodDetailsPage() {
   };
 
   return (
-    <div className="min-h-screen pt-24 pb-16 bg-gray-50">
+    <div className="min-h-screen pt-20 md:pt-24 pb-12 bg-gray-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
-          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 font-medium text-sm group"
+          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4 sm:mb-6 font-medium text-sm group"
         >
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           Back
         </button>
 
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-200 overflow-hidden grid lg:grid-cols-12 gap-0">
+        <div className="bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-gray-200 overflow-hidden grid lg:grid-cols-12 gap-0">
           {/* Left Column: Image */}
-          <div className="lg:col-span-6 relative bg-gray-100 min-h-[350px] lg:min-h-[600px]">
+          <div className="lg:col-span-6 relative bg-gray-100 h-64 sm:h-80 lg:h-auto lg:min-h-[550px]">
             <img
               src={foodItem.image}
               alt={foodItem.name}
@@ -293,7 +293,7 @@ export default function FoodDetailsPage() {
 
             {/* Bottom Action Footer */}
             <div className="mt-8 pt-6 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center justify-between w-full sm:w-auto gap-3">
                 <span className="text-sm font-semibold text-gray-600">Qty:</span>
                 <div className="flex items-center bg-gray-100 rounded-xl p-1">
                   <button

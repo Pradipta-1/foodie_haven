@@ -88,14 +88,18 @@ export default function AdminFoodModal({ item, isOpen, onClose, onSave }: AdminF
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white rounded-2xl sm:rounded-3xl shadow-2xl w-full max-w-2xl max-h-[92vh] sm:max-h-[90vh] overflow-hidden flex flex-col"
+      >
         {/* Modal Header */}
-        <div className="p-6 border-b border-gray-100 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-gray-900">
+        <div className="p-4 sm:p-6 border-b border-gray-100 flex items-center justify-between shrink-0">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900">
             {item ? 'Edit Menu Item' : 'Add New Menu Item'}
           </h2>
           <button
+            type="button"
             onClick={onClose}
             className="p-2 text-gray-400 hover:text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
           >
@@ -104,7 +108,7 @@ export default function AdminFoodModal({ item, isOpen, onClose, onSave }: AdminF
         </div>
 
         {/* Modal Body */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-4">
+        <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6 space-y-4">
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="sm:col-span-2">
               <label className="block text-xs font-bold uppercase text-gray-600 mb-1">
@@ -293,19 +297,19 @@ export default function AdminFoodModal({ item, isOpen, onClose, onSave }: AdminF
               </label>
             </div>
           </div>
+        </div>
 
-          {/* Modal Footer */}
-          <div className="pt-4 border-t border-gray-100 flex items-center justify-end gap-3">
-            <button type="button" onClick={onClose} className="btn-outline py-2 px-4 text-sm">
-              Cancel
-            </button>
-            <button type="submit" className="btn-primary py-2.5 px-6 text-sm flex items-center gap-2">
-              <Save className="w-4 h-4" />
-              <span>{item ? 'Update Item' : 'Save Dish'}</span>
-            </button>
-          </div>
-        </form>
-      </div>
+        {/* Modal Footer */}
+        <div className="shrink-0 p-4 sm:p-5 bg-gray-50 border-t border-gray-100 flex items-center justify-end gap-3">
+          <button type="button" onClick={onClose} className="btn-outline py-2 px-4 text-sm">
+            Cancel
+          </button>
+          <button type="submit" className="btn-primary py-2.5 px-6 text-sm flex items-center gap-2 shadow-sm">
+            <Save className="w-4 h-4" />
+            <span>{item ? 'Update Item' : 'Save Dish'}</span>
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

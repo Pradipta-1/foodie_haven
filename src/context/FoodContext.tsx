@@ -20,21 +20,67 @@ const FoodContext = createContext<FoodContextType | undefined>(undefined);
 const FOOD_SYNC_CHANNEL = 'foodie_menu_sync_channel';
 const CATALOG_STORAGE_KEY = 'foodie_admin_catalog';
 
-// Helper to merge stored items with default mock data
+// Helper to eliminate duplicate food items based on unique ID or normalized dish name
+export function deduplicateFoodItems(items: FoodItem[]): FoodItem[] {
+  if (!Array.isArray(items)) return [];
+
+  const seenIds = new Set<string>();
+  const seenNames = new Set<string>();
+  const unique: FoodItem[] = [];
+
+  for (const item of items) {
+    if (!item) continue;
+    const rawId = String(item.id || (item as any)._id || '').trim();
+    const rawName = String(item.name || '').trim();
+    const normalizedName = rawName.toLowerCase().replace(/\s+/g, ' ');
+
+    if (!normalizedName) continue;
+
+    // Check if duplicate by ID or duplicate by normalized name
+    if ((rawId && seenIds.has(rawId)) || seenNames.has(normalizedName)) {
+      continue; // Duplicate item! Skip and do not include
+    }
+
+    if (rawId) seenIds.add(rawId);
+    seenNames.add(normalizedName);
+    unique.push(item);
+  }
+
+  // Preserve canonical menu order with Coca Cola at the end if present
+  const cocaCola = unique.find(
+    (i) => i.name.toLowerCase().trim() === 'coca cola' || i.id === 'drink-4'
+  );
+  if (cocaCola) {
+    const withoutCola = unique.filter((i) => i !== cocaCola);
+    return [...withoutCola, cocaCola];
+  }
+
+  return unique;
+}
+
+// Helper to merge stored items with default mock data and deduplicate
 function getInitialFoodItems(): FoodItem[] {
-  if (typeof window === 'undefined') return MOCK_FOOD_ITEMS;
+  if (typeof window === 'undefined') return deduplicateFoodItems(MOCK_FOOD_ITEMS);
 
   const saved = localStorage.getItem(CATALOG_STORAGE_KEY);
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        const mockMap = new Map(MOCK_FOOD_ITEMS.map((item) => [item.id, item]));
+        // Build lookup maps by ID and by normalized name from MOCK_FOOD_ITEMS
+        const mockById = new Map(MOCK_FOOD_ITEMS.map((item) => [item.id, item]));
+        const mockByName = new Map(
+          MOCK_FOOD_ITEMS.map((item) => [item.name.toLowerCase().trim(), item])
+        );
+
+        // Map parsed items with enhanced mock details
         const synced = parsed.map((item: FoodItem) => {
-          const mock = mockMap.get(item.id);
+          const normName = item.name?.toLowerCase().trim() || '';
+          const mock = mockById.get(item.id) || mockByName.get(normName);
           if (mock) {
             return {
               ...mock,
+              id: item.id || mock.id,
               isAvailable: item.isAvailable !== undefined ? item.isAvailable : mock.isAvailable,
               price: item.price > 50 ? item.price : mock.price,
             };
@@ -42,19 +88,27 @@ function getInitialFoodItems(): FoodItem[] {
           return item;
         });
 
-        const existingIds = new Set(parsed.map((p: FoodItem) => p.id));
-        const missingItems = MOCK_FOOD_ITEMS.filter((m) => !existingIds.has(m.id));
-        const merged = [...synced, ...missingItems];
+        // Track existing IDs AND existing normalized names to avoid injecting duplicate mock items
+        const existingIds = new Set(synced.map((p: FoodItem) => p.id));
+        const existingNames = new Set(synced.map((p: FoodItem) => p.name?.toLowerCase().trim()));
+
+        const missingItems = MOCK_FOOD_ITEMS.filter(
+          (m) => !existingIds.has(m.id) && !existingNames.has(m.name.toLowerCase().trim())
+        );
+
+        // Strict deduplication of entire catalog
+        const merged = deduplicateFoodItems([...synced, ...missingItems]);
         localStorage.setItem(CATALOG_STORAGE_KEY, JSON.stringify(merged));
         return merged;
       }
     } catch (e) {
-      return MOCK_FOOD_ITEMS;
+      return deduplicateFoodItems(MOCK_FOOD_ITEMS);
     }
   }
 
-  localStorage.setItem(CATALOG_STORAGE_KEY, JSON.stringify(MOCK_FOOD_ITEMS));
-  return MOCK_FOOD_ITEMS;
+  const initial = deduplicateFoodItems(MOCK_FOOD_ITEMS);
+  localStorage.setItem(CATALOG_STORAGE_KEY, JSON.stringify(initial));
+  return initial;
 }
 
 export function FoodProvider({ children }: { children: React.ReactNode }) {
@@ -93,8 +147,9 @@ export function FoodProvider({ children }: { children: React.ReactNode }) {
             addOns: f.addOns,
           }));
 
-          setFoodItems(formatted);
-          localStorage.setItem(CATALOG_STORAGE_KEY, JSON.stringify(formatted));
+          const deduped = deduplicateFoodItems(formatted);
+          setFoodItems(deduped);
+          localStorage.setItem(CATALOG_STORAGE_KEY, JSON.stringify(deduped));
         }
       }
     } catch (e) {
@@ -117,7 +172,7 @@ export function FoodProvider({ children }: { children: React.ReactNode }) {
 
         ch.onmessage = (event) => {
           if (event.data && event.data.type === 'MENU_SYNC' && Array.isArray(event.data.foodItems)) {
-            setFoodItems(event.data.foodItems);
+            setFoodItems(deduplicateFoodItems(event.data.foodItems));
             const meta = event.data.meta;
             if (meta?.action === 'toggle_availability' && meta.foodName) {
               if (meta.isAvailable) {
@@ -136,7 +191,7 @@ export function FoodProvider({ children }: { children: React.ReactNode }) {
         try {
           const parsed = JSON.parse(e.newValue);
           if (Array.isArray(parsed)) {
-            setFoodItems(parsed);
+            setFoodItems(deduplicateFoodItems(parsed));
           }
         } catch (err) {}
       }
@@ -146,7 +201,7 @@ export function FoodProvider({ children }: { children: React.ReactNode }) {
     const handleCustomEvent = (e: Event) => {
       const customEvent = e as CustomEvent<FoodItem[]>;
       if (Array.isArray(customEvent.detail)) {
-        setFoodItems(customEvent.detail);
+        setFoodItems(deduplicateFoodItems(customEvent.detail));
       }
     };
     window.addEventListener('foodie_menu_custom_sync', handleCustomEvent);
@@ -157,10 +212,10 @@ export function FoodProvider({ children }: { children: React.ReactNode }) {
         if (saved) {
           const parsed = JSON.parse(saved);
           if (Array.isArray(parsed)) {
+            const deduped = deduplicateFoodItems(parsed);
             setFoodItems((prev) => {
-              const prevStr = JSON.stringify(prev);
-              if (prevStr !== saved) {
-                return parsed;
+              if (prev.length !== deduped.length || JSON.stringify(prev) !== JSON.stringify(deduped)) {
+                return deduped;
               }
               return prev;
             });
@@ -186,21 +241,22 @@ export function FoodProvider({ children }: { children: React.ReactNode }) {
     updated: FoodItem[],
     meta?: { foodName?: string; isAvailable?: boolean; action?: string }
   ) => {
-    setFoodItems(updated);
+    const deduped = deduplicateFoodItems(updated);
+    setFoodItems(deduped);
 
     try {
-      localStorage.setItem(CATALOG_STORAGE_KEY, JSON.stringify(updated));
+      localStorage.setItem(CATALOG_STORAGE_KEY, JSON.stringify(deduped));
     } catch (e) {}
 
     try {
-      window.dispatchEvent(new CustomEvent('foodie_menu_custom_sync', { detail: updated }));
+      window.dispatchEvent(new CustomEvent('foodie_menu_custom_sync', { detail: deduped }));
     } catch (e) {}
 
     if (channelRef.current) {
       try {
         channelRef.current.postMessage({
           type: 'MENU_SYNC',
-          foodItems: updated,
+          foodItems: deduped,
           meta,
         });
       } catch (e) {}
@@ -243,14 +299,23 @@ export function FoodProvider({ children }: { children: React.ReactNode }) {
   };
 
   const saveFoodItem = async (food: FoodItem) => {
-    const exists = foodItems.some((f) => f.id === food.id || (f as any)._id === food.id);
+    const existingIndex = foodItems.findIndex(
+      (f) =>
+        f.id === food.id ||
+        (f as any)._id === food.id ||
+        f.name.trim().toLowerCase() === food.name.trim().toLowerCase()
+    );
+
     let updated: FoodItem[];
 
-    if (exists) {
-      updated = foodItems.map((f) => (f.id === food.id || (f as any)._id === food.id ? food : f));
+    if (existingIndex >= 0) {
+      const existingId = foodItems[existingIndex].id;
+      const mergedFood = { ...food, id: existingId };
+      updated = [...foodItems];
+      updated[existingIndex] = mergedFood;
       showSuccess(`Updated "${food.name}"`);
       try {
-        await foodApi.update(food.id, food);
+        await foodApi.update(existingId, mergedFood);
       } catch (e) {}
     } else {
       updated = [food, ...foodItems];
@@ -262,7 +327,7 @@ export function FoodProvider({ children }: { children: React.ReactNode }) {
 
     syncAndBroadcastMenu(updated, {
       foodName: food.name,
-      action: exists ? 'update_food' : 'add_food',
+      action: existingIndex >= 0 ? 'update_food' : 'add_food',
     });
   };
 
@@ -284,7 +349,7 @@ export function FoodProvider({ children }: { children: React.ReactNode }) {
   };
 
   const resetCatalog = () => {
-    syncAndBroadcastMenu(MOCK_FOOD_ITEMS, { action: 'reset' });
+    syncAndBroadcastMenu(deduplicateFoodItems(MOCK_FOOD_ITEMS), { action: 'reset' });
     showSuccess('Menu catalog reset to standard store menu');
   };
 

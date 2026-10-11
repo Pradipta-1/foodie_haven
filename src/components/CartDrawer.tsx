@@ -2,10 +2,14 @@ import React from 'react';
 import { X, Plus, Minus, Trash2, ShoppingBag, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import { formatCurrency } from '../lib/utils';
 
 export default function CartDrawer() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const { showWarning } = useToast();
   const {
     cart,
     isCartDrawerOpen,
@@ -31,7 +35,12 @@ export default function CartDrawer() {
 
   const handleCheckout = () => {
     closeCartDrawer();
-    navigate('/cart');
+    if (!isAuthenticated) {
+      showWarning('Please login or sign up to proceed to checkout!');
+      navigate('/login', { state: { from: { pathname: '/checkout' } } });
+      return;
+    }
+    navigate('/checkout');
   };
 
   return (
@@ -43,9 +52,9 @@ export default function CartDrawer() {
       />
 
       {/* Drawer */}
-      <div className="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white shadow-2xl z-50 flex flex-col animate-slide-in-right">
+      <div className="fixed top-0 right-0 h-full h-[100dvh] w-full sm:w-[420px] bg-white shadow-2xl z-50 flex flex-col animate-slide-in-right">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 bg-gradient-to-r from-primary-50 to-accent-50">
+        <div className="shrink-0 flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 bg-gradient-to-r from-primary-50 to-accent-50">
           <div className="flex items-center gap-3">
             <ShoppingBag className="w-6 h-6 text-primary-600" />
             <div>
@@ -173,7 +182,7 @@ export default function CartDrawer() {
 
         {/* Footer */}
         {cart.length > 0 && (
-          <div className="border-t border-gray-200 p-4 sm:p-6 bg-gray-50 space-y-4">
+          <div className="shrink-0 border-t border-gray-200 p-4 sm:p-6 bg-gray-50 space-y-4">
             <div className="flex items-center justify-between text-lg">
               <span className="font-semibold text-gray-700">Subtotal</span>
               <span className="font-bold text-gray-900">{formatCurrency(subtotal)}</span>

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, ArrowLeft, Trash2, Plus, Minus, Tag, Check, ArrowRight } from 'lucide-react';
+import { ShoppingBag, ArrowLeft, Trash2, Plus, Minus, Tag, Check, ArrowRight, LogIn, UserPlus, X, Sparkles, ShieldCheck } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import { formatCurrency } from '../lib/utils';
 import { MOCK_COUPONS } from '../data/mockData';
 
@@ -23,6 +25,33 @@ export default function CartPage() {
   } = useCart();
 
   const [couponInput, setCouponInput] = useState('');
+  const { isAuthenticated, login } = useAuth();
+  const { showWarning, showSuccess } = useToast();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [demoLoggingIn, setDemoLoggingIn] = useState(false);
+
+  const handleProceedToCheckout = () => {
+    if (!isAuthenticated) {
+      showWarning('Please log in or sign up before proceeding to checkout!');
+      setShowAuthModal(true);
+      return;
+    }
+    navigate('/checkout');
+  };
+
+  const handleQuickDemoLogin = async () => {
+    setDemoLoggingIn(true);
+    try {
+      const result = await login('demo@example.com', 'demo123');
+      if (result.success) {
+        showSuccess('Logged in as Rahul Sharma! Proceeding to checkout 🚀');
+        setShowAuthModal(false);
+        navigate('/checkout');
+      }
+    } finally {
+      setDemoLoggingIn(false);
+    }
+  };
 
   const handleApplyCoupon = (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,17 +86,17 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen pt-24 pb-16 bg-gray-50">
+    <div className="min-h-screen pt-20 md:pt-24 pb-12 bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Navigation Breadcrumb */}
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-6 sm:mb-8">
           <div>
             <h1 className="text-2xl sm:text-4xl font-extrabold text-gray-900">Your Shopping Cart</h1>
-            <p className="text-gray-500 text-sm mt-1">Review your order and apply discount coupons</p>
+            <p className="text-gray-500 text-xs sm:text-sm mt-0.5 sm:mt-1">Review your order and apply discount coupons</p>
           </div>
           <button
             onClick={clearCart}
-            className="text-xs font-semibold text-red-600 hover:text-red-700 hover:bg-red-50 px-3 py-2 rounded-lg border border-red-200 transition-colors"
+            className="text-xs font-semibold text-red-600 hover:text-red-700 hover:bg-red-50 px-3 py-1.5 sm:py-2 rounded-lg border border-red-200 transition-colors shrink-0"
           >
             Clear Cart
           </button>
@@ -289,7 +318,7 @@ export default function CartPage() {
               </div>
 
               <button
-                onClick={() => navigate('/checkout')}
+                onClick={handleProceedToCheckout}
                 className="btn-primary w-full py-4 text-base flex items-center justify-center gap-2 shadow-lg"
               >
                 <span>Proceed to Checkout</span>
@@ -303,6 +332,78 @@ export default function CartPage() {
           </div>
         </div>
       </div>
+
+      {/* Auth Required Modal */}
+      {showAuthModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-gray-100 relative animate-scale-up">
+            <button
+              onClick={() => setShowAuthModal(false)}
+              className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="w-16 h-16 bg-gradient-to-tr from-primary-500 to-amber-500 rounded-2xl flex items-center justify-center text-white mx-auto mb-4 shadow-lg shadow-primary-500/30">
+              <ShieldCheck className="w-9 h-9" />
+            </div>
+
+            <h3 className="text-xl sm:text-2xl font-black text-gray-900 text-center mb-2">
+              Sign in to Complete Order
+            </h3>
+            <p className="text-gray-600 text-xs sm:text-sm text-center mb-6 leading-relaxed">
+              Please log in or create a free account to proceed to checkout. Your cart items are saved and ready!
+            </p>
+
+            <div className="space-y-3">
+              <button
+                onClick={() => {
+                  setShowAuthModal(false);
+                  navigate('/login', { state: { from: { pathname: '/checkout' } } });
+                }}
+                className="w-full btn-primary py-3.5 flex items-center justify-center gap-2 text-sm font-bold shadow-md"
+              >
+                <LogIn className="w-4 h-4" />
+                <span>Log In to Existing Account</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setShowAuthModal(false);
+                  navigate('/register', { state: { from: { pathname: '/checkout' } } });
+                }}
+                className="w-full py-3.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-colors border border-gray-200"
+              >
+                <UserPlus className="w-4 h-4 text-gray-600" />
+                <span>Create New Account</span>
+              </button>
+
+              <div className="relative flex py-2 items-center">
+                <div className="flex-grow border-t border-gray-200"></div>
+                <span className="flex-shrink mx-3 text-gray-400 text-xs font-semibold uppercase">Or Instant Demo</span>
+                <div className="flex-grow border-t border-gray-200"></div>
+              </div>
+
+              <button
+                onClick={handleQuickDemoLogin}
+                disabled={demoLoggingIn}
+                className="w-full py-3 px-4 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all hover:shadow-sm"
+              >
+                <Sparkles className="w-4 h-4 text-emerald-600" />
+                <span>{demoLoggingIn ? 'Logging in...' : '1-Click Customer Demo Login'}</span>
+              </button>
+            </div>
+
+            <button
+              onClick={() => setShowAuthModal(false)}
+              className="w-full mt-4 text-center text-xs text-gray-500 hover:text-gray-800 font-medium py-1"
+            >
+              Continue browsing
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

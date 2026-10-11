@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { User, Mail, Phone, Lock, AlertCircle, Loader2, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 
 export default function RegisterPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { register } = useAuth();
   const { showSuccess, showError } = useToast();
+
+  const from = (location.state as any)?.from?.pathname || (location.state as any)?.from || '/';
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -79,7 +82,7 @@ export default function RegisterPage() {
 
       if (result.success) {
         showSuccess('Account created successfully! Welcome to Foodie Haven 🎉');
-        navigate('/');
+        navigate(from, { replace: true });
       } else {
         showError(result.error || 'Registration failed');
         setErrors({ form: result.error || 'Registration failed' });
@@ -92,130 +95,130 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen pt-24 pb-16 bg-gradient-to-br from-primary-50 via-orange-50 to-accent-50 flex items-center justify-center">
+    <div className="min-h-screen pt-20 md:pt-24 pb-10 bg-gradient-to-br from-primary-50 via-orange-50 to-accent-50 flex items-center justify-center">
       <div className="max-w-md w-full mx-auto px-4">
-        <div className="bg-white rounded-3xl shadow-2xl p-8 sm:p-10 border border-gray-100">
+        <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl p-5 sm:p-7 border border-gray-100">
           {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-extrabold text-gray-900 mb-2">Create Account</h1>
-            <p className="text-gray-600 text-sm">
+          <div className="text-center mb-4">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-1">Create Account</h1>
+            <p className="text-gray-600 text-xs sm:text-sm">
               Join thousands of food lovers and start ordering today
             </p>
           </div>
 
           {/* Form Error */}
           {errors.form && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3 text-sm text-red-700">
-              <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+            <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-xl flex items-start gap-2.5 text-xs sm:text-sm text-red-700">
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
               <span>{errors.form}</span>
             </div>
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-3">
             {/* Full Name */}
             <div>
-              <label htmlFor="fullName" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="fullName" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">
                 Full Name
               </label>
               <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
                   type="text"
                   id="fullName"
                   value={formData.fullName}
                   onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                  className={`input-field pl-12 ${errors.fullName ? 'border-red-500 ring-1 ring-red-500' : ''}`}
+                  className={`input-field pl-10 py-2 text-sm ${errors.fullName ? 'border-red-500 ring-1 ring-red-500' : ''}`}
                   placeholder="Rahul Sharma"
                 />
               </div>
-              {errors.fullName && <p className="text-xs text-red-600 mt-1">{errors.fullName}</p>}
+              {errors.fullName && <p className="text-xs text-red-600 mt-0.5">{errors.fullName}</p>}
             </div>
 
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">
                 Email Address
               </label>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
                   type="email"
                   id="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className={`input-field pl-12 ${errors.email ? 'border-red-500 ring-1 ring-red-500' : ''}`}
+                  className={`input-field pl-10 py-2 text-sm ${errors.email ? 'border-red-500 ring-1 ring-red-500' : ''}`}
                   placeholder="rahul.sharma@example.com"
                 />
               </div>
-              {errors.email && <p className="text-xs text-red-600 mt-1">{errors.email}</p>}
+              {errors.email && <p className="text-xs text-red-600 mt-0.5">{errors.email}</p>}
             </div>
 
             {/* Phone */}
             <div>
-              <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="phone" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">
                 Phone Number
               </label>
               <div className="relative">
-                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
                   type="tel"
                   id="phone"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className={`input-field pl-12 ${errors.phone ? 'border-red-500 ring-1 ring-red-500' : ''}`}
+                  className={`input-field pl-10 py-2 text-sm ${errors.phone ? 'border-red-500 ring-1 ring-red-500' : ''}`}
                   placeholder="+91 98765 43210"
                 />
               </div>
-              {errors.phone && <p className="text-xs text-red-600 mt-1">{errors.phone}</p>}
+              {errors.phone && <p className="text-xs text-red-600 mt-0.5">{errors.phone}</p>}
             </div>
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
                   type="password"
                   id="password"
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className={`input-field pl-12 ${errors.password ? 'border-red-500 ring-1 ring-red-500' : ''}`}
+                  className={`input-field pl-10 py-2 text-sm ${errors.password ? 'border-red-500 ring-1 ring-red-500' : ''}`}
                   placeholder="Minimum 6 characters"
                 />
               </div>
-              {errors.password && <p className="text-xs text-red-600 mt-1">{errors.password}</p>}
+              {errors.password && <p className="text-xs text-red-600 mt-0.5">{errors.password}</p>}
             </div>
 
             {/* Confirm Password */}
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-700 mb-2">
+              <label htmlFor="confirmPassword" className="block text-xs sm:text-sm font-semibold text-gray-700 mb-1">
                 Confirm Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
                   type="password"
                   id="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                  className={`input-field pl-12 ${errors.confirmPassword ? 'border-red-500 ring-1 ring-red-500' : ''}`}
+                  className={`input-field pl-10 py-2 text-sm ${errors.confirmPassword ? 'border-red-500 ring-1 ring-red-500' : ''}`}
                   placeholder="Re-enter your password"
                 />
               </div>
-              {errors.confirmPassword && <p className="text-xs text-red-600 mt-1">{errors.confirmPassword}</p>}
+              {errors.confirmPassword && <p className="text-xs text-red-600 mt-0.5">{errors.confirmPassword}</p>}
             </div>
 
             {/* Terms & Conditions */}
-            <div>
+            <div className="pt-0.5">
               <label className="flex items-start gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={formData.agreeToTerms}
                   onChange={(e) => setFormData({ ...formData, agreeToTerms: e.target.checked })}
-                  className={`w-4 h-4 text-primary-600 rounded border-gray-300 focus:ring-primary-500 mt-0.5 ${
+                  className={`w-3.5 h-3.5 text-primary-600 rounded border-gray-300 focus:ring-primary-500 mt-0.5 ${
                     errors.agreeToTerms ? 'border-red-500' : ''
                   }`}
                 />
@@ -230,23 +233,23 @@ export default function RegisterPage() {
                   </button>
                 </span>
               </label>
-              {errors.agreeToTerms && <p className="text-xs text-red-600 mt-1">{errors.agreeToTerms}</p>}
+              {errors.agreeToTerms && <p className="text-xs text-red-600 mt-0.5">{errors.agreeToTerms}</p>}
             </div>
 
             {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full py-3.5 flex items-center justify-center gap-2 text-base shadow-lg"
+              className="btn-primary w-full py-2.5 sm:py-3 flex items-center justify-center gap-2 text-sm sm:text-base shadow-md mt-1"
             >
               {loading ? (
                 <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin" />
                   <span>Creating account...</span>
                 </>
               ) : (
                 <>
-                  <CheckCircle2 className="w-5 h-5" />
+                  <CheckCircle2 className="w-4 h-4" />
                   <span>Create Account</span>
                 </>
               )}
@@ -254,9 +257,13 @@ export default function RegisterPage() {
           </form>
 
           {/* Login Link */}
-          <p className="text-center text-sm text-gray-600 mt-6">
+          <p className="text-center text-xs sm:text-sm text-gray-600 mt-3.5">
             Already have an account?{' '}
-            <Link to="/login" className="text-primary-600 hover:text-primary-700 font-bold">
+            <Link
+              to="/login"
+              state={{ from: (location.state as any)?.from }}
+              className="text-primary-600 hover:text-primary-700 font-bold"
+            >
               Login
             </Link>
           </p>

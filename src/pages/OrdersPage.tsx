@@ -78,10 +78,10 @@ export default function OrdersPage() {
   };
 
   return (
-    <div className="min-h-screen pt-24 pb-16 bg-gray-50">
+    <div className="min-h-screen pt-20 md:pt-24 pb-12 bg-gray-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-5 sm:mb-8">
           <div>
             <h1 className="text-2xl sm:text-4xl font-extrabold text-gray-900">My Orders</h1>
             <p className="text-gray-500 text-sm mt-1">Track current orders and view past receipts</p>
@@ -93,7 +93,7 @@ export default function OrdersPage() {
         </div>
 
         {/* Filter Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-6">
+        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-6 -mx-2 px-2 sm:mx-0 sm:px-0 scrollbar-none">
           {[
             { id: 'all', label: 'All Orders' },
             { id: 'active', label: 'Active & In-Progress' },
@@ -103,7 +103,7 @@ export default function OrdersPage() {
             <button
               key={tab.id}
               onClick={() => setFilter(tab.id as any)}
-              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
+              className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap shrink-0 ${
                 filter === tab.id
                   ? 'bg-primary-600 text-white shadow-md'
                   : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
@@ -116,7 +116,7 @@ export default function OrdersPage() {
 
         {/* Orders List / Empty */}
         {filteredOrders.length === 0 ? (
-          <div className="bg-white rounded-3xl p-12 text-center border border-gray-200 shadow-sm max-w-md mx-auto my-8">
+          <div className="bg-white rounded-3xl p-8 sm:p-12 text-center border border-gray-200 shadow-sm max-w-md mx-auto my-8">
             <div className="w-20 h-20 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-4">
               <Package className="w-10 h-10" />
             </div>
@@ -140,28 +140,28 @@ export default function OrdersPage() {
                   className="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden transition-all hover:shadow-md"
                 >
                   {/* Order Card Header */}
-                  <div className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100 flex flex-wrap items-center justify-between gap-4">
+                  <div className="p-4 sm:p-6 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100 flex flex-wrap items-center justify-between gap-3 sm:gap-4">
                     <div className="space-y-1">
-                      <div className="flex items-center gap-3">
-                        <span className="font-mono font-bold text-base sm:text-lg text-gray-900">
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <span className="font-mono font-bold text-sm sm:text-lg text-gray-900">
                           #{order.orderNumber}
                         </span>
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-bold uppercase border ${getStatusBadge(
+                          className={`px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase border ${getStatusBadge(
                             order.status
                           )}`}
                         >
                           {order.status}
                         </span>
                       </div>
-                      <div className="flex items-center gap-4 text-xs text-gray-500">
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500">
                         <span className="flex items-center gap-1">
                           <Clock className="w-3.5 h-3.5" />
                           {formatDateTime(order.createdAt)}
                         </span>
-                        <span>•</span>
+                        <span className="hidden sm:inline">•</span>
                         <span>{order.items.length} items</span>
-                        <span>•</span>
+                        <span className="hidden sm:inline">•</span>
                         <span className="font-bold text-gray-900">{formatCurrency(order.grandTotal)}</span>
                       </div>
                     </div>
